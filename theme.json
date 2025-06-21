@@ -1,0 +1,21 @@
+{
+    "button": {
+        "normal_bg": "#FFFFFF",
+        "hovered_bg": "#F0F0F0",
+        "disabled_bg": "#DDDDDD",
+        "selected_bg": "#FFFFFF",
+        "text_color": "#000000",
+        "font": {
+            "name": "default",
+            "size": 16,
+            "bold": true
+        }
+    },"label": {
+    "text_color": "#000000",
+    "font": {
+        "name": "default",
+        "size": 16,
+        "bold": true
+    }
+}
+}

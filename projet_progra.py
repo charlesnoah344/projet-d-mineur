@@ -9,10 +9,10 @@ import json
 class App:
   def __init__(self):
     pygame.init()
-    self.size = (800, 600)
+    self.size = (1000, 600)
     self.screen = pygame.display.set_mode(self.size)
-    self.screen.fill((245, 245, 220))
-    self.manager = pygame_gui.UIManager(self.size)
+    self.screen.fill((100, 149, 237))
+    self.manager = pygame_gui.UIManager(self.size,'theme.json')
     self.largeur_case=50
     self.hauteur_case=50
     self.nombre_bombe=10
@@ -29,7 +29,7 @@ class App:
             for j in range(self.taille_grille):
             #créer les boutons
                 self.buttonList.append(UIButton(
-        relative_rect=pygame.Rect(i*self.largeur_case, j*self.hauteur_case, self.hauteur_case, self.hauteur_case),
+        relative_rect=pygame.Rect(300+i*self.largeur_case, 100+j*self.hauteur_case, self.hauteur_case, self.hauteur_case),
         text='',
         manager=self.manager
         ))
@@ -65,13 +65,13 @@ class App:
     create_button(self)
     
 
-    # Créer le label de victoire ou de défaite
+    # Créer une zone de texte de victoire ou de défaite
     self.input = UITextEntryLine(
-        relative_rect=pygame.Rect(450, 300, 150, 75),placeholder_text='Entrez votre pseudo',
+        relative_rect=pygame.Rect(800, 300, 150, 75),placeholder_text='Entrez votre pseudo',
         manager=self.manager)#creer la zone de texte ou on va rentrer son pseudo
         
     self.save_button = UIButton(
-        relative_rect=pygame.Rect(450, 375, 50, 50),
+        relative_rect=pygame.Rect(900, 375, 50, 50),
         text='SAVE',
         manager=self.manager
         )#bouton pour sauvegarder
@@ -89,7 +89,7 @@ class App:
             manager=self.manager)#label qui affiche le meilleur score et le game over
    
     self.timer_label = UILabel(
-            relative_rect=pygame.Rect( 450, 150, 150, 100),  # Position et taille
+            relative_rect=pygame.Rect( 150, 150, 150, 100),  # Position et taille
             text='00:00',
             manager=self.manager
         )#label qui affiche le temps
@@ -225,7 +225,7 @@ class App:
             self.manager.update(time_delta/1000)
             self.update_timer()
 
-            pygame.draw.rect(self.screen, (245, 245, 220), pygame.Rect(0, 0, 800, 600))
+            pygame.draw.rect(self.screen, (100, 149, 237), pygame.Rect(0, 0, 1000, 600))
         
             self.manager.draw_ui(self.screen)
 
