@@ -29,8 +29,11 @@ def page_1():
         def process_events(self, event: pygame.event.Event):
             if event.type == pygame_gui.UI_BUTTON_PRESSED:#gestion du clic sur le bouton SAVE
                     if event.ui_element is self.validate_button:
-                        number = int(self.nombre_mine.text)
-                        page_2(number)
+                        try:
+                            number = int(self.nombre_mine.text)
+                            page_2(number)
+                        except:
+                            page_1()
         def run(self):
                 clock = pygame.time.Clock()
                 while True:
@@ -43,9 +46,7 @@ def page_1():
                     self.manager.update(time_delta/1000)
 
                     pygame.draw.rect(self.screen, (100, 149, 237), pygame.Rect(0, 0, 1000, 600))
-                
                     self.manager.draw_ui(self.screen)
-
                     pygame.display.flip()
 
     menu().run()
@@ -262,11 +263,6 @@ def page_2(number):
                         with open('temps_demineur.json', 'w') as file:
                             json.dump(all_times, file, indent=4)
 
-                
-                
-
-                                                
-            
         def run(self):
                 clock = pygame.time.Clock()
                 while True:
