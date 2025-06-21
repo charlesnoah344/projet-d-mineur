@@ -21,6 +21,7 @@ class App:
     self.buttonList=[]
     self.game_mode=True#gestion du clique sur une case de bombe
     self.time_on=True
+    self.first_click=False
     self.revealed = [[False for _ in range(self.taille_grille)] for _ in range(self.taille_grille)]#matrice contenant l'etat de clique sur une case
     self.flagged = np.full((self.taille_grille, self.taille_grille), False, dtype=bool)#matrice contenant l'etat de drapeau
     def create_button(self):
@@ -145,12 +146,20 @@ class App:
 
   def process_events(self, event: pygame.event.Event):
     """cette fonction gère les différent évènement de l'utlisateur"""
-    if event.type==pygame_gui.UI_BUTTON_PRESSED:
+
+    if event.type==pygame_gui.UI_BUTTON_PRESSED:#gestion du clic gauche
         mouse_x,mouse_y=pygame.mouse.get_pos()
         pos_x=(mouse_x-300)//self.hauteur_case#on divise par self.hauteur_case=50 car ce n'est pas vraiment la position de la case sur l'écran qui nous intéresse mais bien sa position dans notre matrice virtuelle(son numéro de ligne ou de colonne). comme les cases font 50 de coté on obtient le numéro de ligne ou de colonne
         pos_y=(mouse_y-100)//self.hauteur_case
         for k in range(len(self.buttonList)):
             if event.ui_element is self.buttonList[k]:
+                if self.grille[pos_y][pos_x]==-1 and self.first_click==False:
+                    self.buttonList[pos_x * self.taille_grille + pos_y].set_text("F")
+                    self.flagged[pos_y][pos_x]=True
+                    self.first_click=True
+                    
+                    
+
                 if self.grille[pos_y][pos_x]==-1:
                     if self.flagged[pos_y][pos_x]==False:#si on a déja mis un flag, l'on ne devrait plus pouvoir cliquer sur ce bouton
                         self.buttonList[k].set_text("boom")
@@ -191,7 +200,7 @@ class App:
         for button in self.buttonList:
             button.disable()
 
-        if event.type == pygame_gui.UI_BUTTON_PRESSED:
+        if event.type == pygame_gui.UI_BUTTON_PRESSED:#gestion du clic sur le bouton SAVE
             if event.ui_element is self.save_button:
                 name = self.input.text
                 info = {'pseudo': name, 'time': self.time}
