@@ -84,7 +84,7 @@ class App:
     best_time=best_timer()
 
     self.game_over_label = UILabel(
-            relative_rect=pygame.Rect( 450, 0, 250, 150),  # Position et taille
+            relative_rect=pygame.Rect( 400, 0, 250, 150),  # Position et taille
             text=f"MEILLEUR SCORE: {best_time['pseudo']} --> {best_time['time']}",
             manager=self.manager)#label qui affiche le meilleur score et le game over
    
@@ -147,8 +147,8 @@ class App:
     """cette fonction gère les différent évènement de l'utlisateur"""
     if event.type==pygame_gui.UI_BUTTON_PRESSED:
         mouse_x,mouse_y=pygame.mouse.get_pos()
-        pos_x=mouse_x//self.hauteur_case#on divise par self.hauteur_case=50 car ce n'est pas vraiment la position de la case sur l'écran qui nous intéresse mais bien sa position dans notre matrice virtuelle(son numéro de ligne ou de colonne). comme les cases font 50 de coté on obtient le numéro de ligne ou de colonne
-        pos_y=mouse_y//self.hauteur_case
+        pos_x=(mouse_x-300)//self.hauteur_case#on divise par self.hauteur_case=50 car ce n'est pas vraiment la position de la case sur l'écran qui nous intéresse mais bien sa position dans notre matrice virtuelle(son numéro de ligne ou de colonne). comme les cases font 50 de coté on obtient le numéro de ligne ou de colonne
+        pos_y=(mouse_y-100)//self.hauteur_case
         for k in range(len(self.buttonList)):
             if event.ui_element is self.buttonList[k]:
                 if self.grille[pos_y][pos_x]==-1:
@@ -167,8 +167,8 @@ class App:
     elif event.type==pygame.MOUSEBUTTONDOWN:
         if event.button==3:
             mouse_x,mouse_y=pygame.mouse.get_pos()
-            x=mouse_x//self.hauteur_case
-            y=mouse_y//self.hauteur_case
+            x=(mouse_x-300)//self.hauteur_case
+            y=(mouse_y-100)//self.hauteur_case
             if 0 <= x < self.taille_grille and 0 <= y < self.taille_grille:  # Vérifiez que les indices sont valides
                 if self.flagged[y][x]==False and self.revealed[y][x]==False:
                     self.buttonList[x * self.taille_grille + y].set_text("F")
