@@ -11,6 +11,7 @@ class App:
     pygame.init()
     self.size = (800, 600)
     self.screen = pygame.display.set_mode(self.size)
+    self.screen.fill((245, 245, 220))
     self.manager = pygame_gui.UIManager(self.size)
     self.largeur_case=50
     self.hauteur_case=50
@@ -21,39 +22,49 @@ class App:
     self.game_mode=True#gestion du clique sur une case de bombe
     self.time_on=True
     self.revealed = [[False for _ in range(self.taille_grille)] for _ in range(self.taille_grille)]#matrice contenant l'etat de clique sur une case
-    self.flagged = np.full((self.taille_grille, self.taille_grille), False, dtype=bool)
-    #matrice contenant l'etat de drapeau
-    for i in range(self.taille_grille):
-        for j in range(self.taille_grille):
-         #créer les boutons
-          self.buttonList.append(UIButton(
-      relative_rect=pygame.Rect(i*self.largeur_case, j*self.hauteur_case, self.hauteur_case, self.hauteur_case),
-      text='',
-      manager=self.manager
-    ))
-     #créer une matrice pour gérer le backend du jeu !ol     
-    self.grille= np.zeros((self.taille_grille, self.taille_grille))#matrice vide ayant n lignes et n colonnes
-    nb_mines=self.nombre_bombe
-    while nb_mines > 0:
-        x = random.randint(0, self.taille_grille - 1)
-        y = random.randint(0, self.taille_grille - 1)
-        if self.grille[y][x] != -1:
-            self.grille[y][x] = -1
-            nb_mines -= 1
+    self.flagged = np.full((self.taille_grille, self.taille_grille), False, dtype=bool)#matrice contenant l'etat de drapeau
+    def create_button(self):
+        '''cette fonction cree les boutons'''
+        for i in range(self.taille_grille):
+            for j in range(self.taille_grille):
+            #créer les boutons
+                self.buttonList.append(UIButton(
+        relative_rect=pygame.Rect(i*self.largeur_case, j*self.hauteur_case, self.hauteur_case, self.hauteur_case),
+        text='',
+        manager=self.manager
+        ))
+                  
+    def grille_de_jeu(self):
+        """cette fonction initialise le plateau de jeu sous forme de matrice"""
+        self.grille= np.zeros((self.taille_grille, self.taille_grille))#matrice vide ayant n lignes et n colonnes
+        nb_mines=self.nombre_bombe
+        while nb_mines > 0:
+            x = random.randint(0, self.taille_grille - 1)
+            y = random.randint(0, self.taille_grille - 1)
+            if self.grille[y][x] != -1:
+                self.grille[y][x] = -1#placement des mines
+                nb_mines -= 1
 
-        # Calcul du nombre de mines voisines
-        for y in range(self.taille_grille):
-            for x in range(self.taille_grille):
-                if self.grille[y][x] != -1:
-                    compteur_mines = 0#initialisation
-                    # Parcourir les 8 voisins
-                    for i in range(-1, 2):
-                        for j in range(-1, 2):
-                            if 0 <= y+i < self.taille_grille and 0 <= x+j < self.taille_grille:#pour eviter qu'on ne sorte de la grille
-                                if self.grille[y+i][x+j] == -1:
-                                    compteur_mines += 1
-                    self.grille[y][x] = compteur_mines
-    print(self.grille)
+            # Calcul du nombre de mines voisines
+            for y in range(self.taille_grille):
+                for x in range(self.taille_grille):
+                    if self.grille[y][x] != -1:
+                        compteur_mines = 0#initialisation
+                        # Parcourir les 8 voisins
+                        for i in range(-1, 2):
+                            for j in range(-1, 2):
+                                if 0 <= y+i < self.taille_grille and 0 <= x+j < self.taille_grille:#pour eviter qu'on ne sorte de la grille
+                                    if self.grille[y+i][x+j] == -1:
+                                        compteur_mines += 1
+                        self.grille[y][x] = compteur_mines
+        print(self.grille)
+        return self.grille
+    
+
+    self.grille=grille_de_jeu(self)
+    create_button(self)
+    
+
     # Créer le label de victoire ou de défaite
     self.input = UITextEntryLine(
         relative_rect=pygame.Rect(450, 300, 150, 75),placeholder_text='Entrez votre pseudo',
@@ -64,24 +75,29 @@ class App:
         text='SAVE',
         manager=self.manager
         )#bouton pour sauvegarder
-    with open('temps_demineur.json') as file:
-        content=file.read()
-        content=json.loads(content)
-        best_time = min(content, key=lambda x: float(x['time']))
+    def best_timer():
+        with open('temps_demineur.json') as file:
+            content=file.read()
+            content=json.loads(content)
+            best_time = min(content, key=lambda x: float(x['time']))#donne le temps minimale(meilleur temps)
+            return best_time
+    best_time=best_timer()
 
     self.game_over_label = UILabel(
             relative_rect=pygame.Rect( 450, 0, 250, 150),  # Position et taille
             text=f"MEILLEUR SCORE: {best_time['pseudo']} --> {best_time['time']}",
-            manager=self.manager)
+            manager=self.manager)#label qui affiche le meilleur score et le game over
    
     self.timer_label = UILabel(
             relative_rect=pygame.Rect( 450, 150, 150, 100),  # Position et taille
             text='00:00',
             manager=self.manager
-        )
+        )#label qui affiche le temps
+    
     # Démarrer le chronomètre
     self.start_time = pygame.time.get_ticks()
   def update_timer(self):
+    '''cette fonction fait fonctionner le chronomètre'''
     if self.time_on:
         # Temps écoulé en millisecondes
         elapsed_time = pygame.time.get_ticks() - self.start_time
@@ -117,6 +133,8 @@ class App:
         
 
   def game_over(self):
+    """cette fonction est une fonction de vérification de fin de partie. elle vérifie si toutes les cases non 
+    piégées ont été revélées"""
     k=0
     for i in range(self.taille_grille):
         for j in range(self.taille_grille):
@@ -126,8 +144,7 @@ class App:
       
 
   def process_events(self, event: pygame.event.Event):
-    #implémenter le backend en frontend(afficher le contenu de ma matrice virtuelle sur les boutons)
-
+    """cette fonction gère les différent évènement de l'utlisateur"""
     if event.type==pygame_gui.UI_BUTTON_PRESSED:
         mouse_x,mouse_y=pygame.mouse.get_pos()
         pos_x=mouse_x//self.hauteur_case#on divise par self.hauteur_case=50 car ce n'est pas vraiment la position de la case sur l'écran qui nous intéresse mais bien sa position dans notre matrice virtuelle(son numéro de ligne ou de colonne). comme les cases font 50 de coté on obtient le numéro de ligne ou de colonne
@@ -208,7 +225,7 @@ class App:
             self.manager.update(time_delta/1000)
             self.update_timer()
 
-            pygame.draw.rect(self.screen, (0, 0, 0), pygame.Rect(0, 0, 800, 600))
+            pygame.draw.rect(self.screen, (245, 245, 220), pygame.Rect(0, 0, 800, 600))
         
             self.manager.draw_ui(self.screen)
 
