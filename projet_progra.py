@@ -7,13 +7,17 @@ import random
 import numpy as np
 import json
 def page_1():
+    """cette fonction définit la page de menu"""
     class menu:
         def __init__(self):
             pygame.init()
             self.size = (1000, 600)
             self.screen = pygame.display.set_mode(self.size)
-            self.screen.fill((100, 149, 237))
+            self.screen.fill((100, 149, 237))#couleur du background de menu
             self.number=0
+            self.mon_image = pygame.image.load('image_demineur.jpg')
+            self.mon_image = pygame.transform.scale(self.mon_image, (400, 200))
+            self.screen.blit(self.mon_image, (355, 350))
             self.manager = pygame_gui.UIManager(self.size,'theme.json')
             self.menu_label = UILabel(
                     relative_rect=pygame.Rect( 300, 100, 500, 150),  # Position et taille
@@ -27,9 +31,10 @@ def page_1():
                 text='JOUER',
                 manager=self.manager)
         def process_events(self, event: pygame.event.Event):
+            '''gestion des évènements'''
             if event.type == pygame_gui.UI_BUTTON_PRESSED:#gestion du clic sur le bouton SAVE
                     if event.ui_element is self.validate_button:
-                        try:
+                        try:#gestion de l"entrée de l'utilisateur
                             number = int(self.nombre_mine.text)
                             page_2(number)
                         except:
@@ -47,6 +52,7 @@ def page_1():
 
                     pygame.draw.rect(self.screen, (100, 149, 237), pygame.Rect(0, 0, 1000, 600))
                     self.manager.draw_ui(self.screen)
+                    self.screen.blit(self.mon_image, (355, 350))
                     pygame.display.flip()
 
     menu().run()
