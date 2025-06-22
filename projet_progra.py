@@ -6,26 +6,14 @@ from dataclasses import dataclass
 import random
 import numpy as np
 import json
-def afficher(text):
+def afficher(text,position,taille):
     """cette fonction affiche à l'ecran un texte """
     pygame.init()
-    screen = pygame.display.set_mode((1000,600))
-    font=pygame.font.SysFont('arial', 80, bold=True)
-    text_surface=font.render(text,True,(255, 255, 255))
-    text_rect=text_surface.get_rect(center=(400,300))
+    font=pygame.font.SysFont('arial', taille, bold=True)
+    text_surface=font.render(text,True,(255, 255, 255))#couleur blanche
+    text_rect=text_surface.get_rect(center=position)#position en x et y
     clock = pygame.time.Clock()
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-
-        # Dessiner le texte
-        screen.blit(text_surface, text_rect)
-
-        # Mettre à jour l’écran
-        pygame.display.flip()
-        clock.tick(60)
+    return (text_surface, text_rect)
 
 
 def page_1(sentence='Entrer le nombre de bombe'):#argument text afin de pouvoir changer le placeholder 
@@ -41,11 +29,9 @@ def page_1(sentence='Entrer le nombre de bombe'):#argument text afin de pouvoir 
             self.mon_image = pygame.image.load('image_demineur.jpg')
             self.mon_image = pygame.transform.scale(self.mon_image, (400, 200))
             self.screen.blit(self.mon_image, (355, 350))
+            self.menu_label=afficher('Bienvenue\nby Lesno',(550,100),60)
+            self.screen.blit(self.menu_label[0], self.menu_label[1])
             self.manager = pygame_gui.UIManager(self.size,'theme.json')
-            self.menu_label = UILabel(
-                    relative_rect=pygame.Rect( 300, 100, 500, 150),  # Position et taille
-                    text=f"BIENVENUE DANS LE DEMINEUR DE LESNO",
-                    manager=self.manager)
             self.nombre_mine = UITextEntryLine(
                 relative_rect=pygame.Rect(450, 200, 200, 75),placeholder_text=sentence,
                 manager=self.manager)#par défaut on demande d'entrer le nombre de bombe
@@ -78,7 +64,8 @@ def page_1(sentence='Entrer le nombre de bombe'):#argument text afin de pouvoir 
 
                     pygame.draw.rect(self.screen, (30, 144, 255), pygame.Rect(0, 0, 1000, 600))
                     self.manager.draw_ui(self.screen)
-                    self.screen.blit(self.mon_image, (355, 350))
+                    self.screen.blit(self.mon_image, (355, 350))#dessin de l'image
+                    self.screen.blit(self.menu_label[0], self.menu_label[1])#dessin du texte du menu
                     pygame.display.flip()
                     if self.next_page:
                         pygame.quit()  # Ferme la fenêtre courante
@@ -170,10 +157,13 @@ def page_2(number):
                     return best_time
             best_time=best_timer()
 
-            self.game_over_label = UILabel(
+            '''self.game_over_label = UILabel(
                     relative_rect=pygame.Rect( 400, 0, 250, 150),  # Position et taille
                     text=f"MEILLEUR SCORE: {best_time['pseudo']} --> {best_time['time']}",
-                    manager=self.manager)#label qui affiche le meilleur score et le game over
+                    manager=self.manager)#label qui affiche le meilleur score et le game over'''
+            
+            self.game_over_label=afficher(f"MEILLEUR SCORE: \n{best_time['pseudo']} --> {best_time['time']}",(550,60),30)
+            self.screen.blit(self.game_over_label[0], self.game_over_label[1])
         
             self.timer_label = UILabel(
                     relative_rect=pygame.Rect( 150, 150, 150, 100),  # Position et taille
@@ -276,11 +266,11 @@ def page_2(number):
             #gestion des victoires ou échec
             if self.game_mode==False:
                 self.time_on=False
-                self.game_over_label.set_text("GAME OVER")
+                #self.game_over_label.set_text("GAME OVER")
                 for button in self.buttonList:
                     button.disable()#bloquer les boutons et marquer la fin de la partie
             elif self.game_over()==True:#si j'ai revelé toutes les cases non minées
-                self.game_over_label.set_text("YOU'RE A GENIOUS!")
+                #self.game_over_label.set_text("YOU'RE A GENIOUS!")
                 self.time_on=False
                 for button in self.buttonList:
                     button.disable()
@@ -313,11 +303,9 @@ def page_2(number):
                             self.process_events(event)
                     self.manager.update(time_delta/1000)
                     self.update_timer()
-
                     pygame.draw.rect(self.screen, (30, 144, 255), pygame.Rect(0, 0, 1000, 600))
-                
-                    self.manager.draw_ui(self.screen)
-
+                    self.manager.draw_ui(self.screen)#dessine le background
+                    self.screen.blit(self.game_over_label[0], self.game_over_label[1])
                     pygame.display.flip()
 
     App().run()
