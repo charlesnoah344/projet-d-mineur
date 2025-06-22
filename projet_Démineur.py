@@ -260,14 +260,14 @@ def page_2(number):
             #gestion des victoires ou échec
             if self.game_mode==False:
                 self.time_on=False
-                #self.game_over_label.set_text("GAME OVER")
                 self.game_over_label=afficher('GAME OVER',(550,60),30)
-
-                
                 for button in self.buttonList:
                     button.disable()#bloquer les boutons et marquer la fin de la partie
+                for i in range(self.taille_grille):
+                    for j in range(self.taille_grille):
+                        self.reveal_cell(j, i)
+
             elif self.game_over()==True:#si j'ai revelé toutes les cases non minées
-                #self.game_over_label.set_text("YOU'RE A GENIOUS!")
                 self.game_over_label=afficher('YOU ARE A GENIOUS!',(550,60),30)
                 self.time_on=False
                 for button in self.buttonList:
