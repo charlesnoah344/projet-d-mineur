@@ -7,15 +7,36 @@ import random
 import numpy as np
 import json
 def afficher(text):
-    pass
-def page_1(sentence='Entrer le nombre de bombe'):#ajouter d"un argument text afin de pouvoir changer le placeholder 
+    """cette fonction affiche à l'ecran un texte """
+    pygame.init()
+    screen = pygame.display.set_mode((1000,600))
+    font=pygame.font.SysFont('arial', 80, bold=True)
+    text_surface=font.render(text,True,(255, 255, 255))
+    text_rect=text_surface.get_rect(center=(400,300))
+    clock = pygame.time.Clock()
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+        # Dessiner le texte
+        screen.blit(text_surface, text_rect)
+
+        # Mettre à jour l’écran
+        pygame.display.flip()
+        clock.tick(60)
+
+
+def page_1(sentence='Entrer le nombre de bombe'):#argument text afin de pouvoir changer le placeholder 
     """cette fonction définit la page de menu"""
     class menu:
         def __init__(self):
             pygame.init()
+            self.next_page=None
             self.size = (1000, 600)
             self.screen = pygame.display.set_mode(self.size)
-            self.screen.fill((100, 149, 237))#couleur du background de menu
+            self.screen.fill((30, 144, 255))#couleur du background de menu
             self.number=0
             self.mon_image = pygame.image.load('image_demineur.jpg')
             self.mon_image = pygame.transform.scale(self.mon_image, (400, 200))
@@ -36,14 +57,14 @@ def page_1(sentence='Entrer le nombre de bombe'):#ajouter d"un argument text afi
             '''gestion des évènements'''
             if event.type == pygame_gui.UI_BUTTON_PRESSED:#gestion du clic sur le bouton SAVE
                     if event.ui_element is self.validate_button:
-                        try:#gestion de l"entrée de l'utilisateur
+                        try:
                             number = int(self.nombre_mine.text)
-                            if number<20 and number>10:
-                                page_2(number)
+                            if 10 <= number <= 20:
+                                self.next_page = ('page_2', number)
                             else:
-                                page_1("un nombre entre 10 et 20")
+                                self.next_page = ('page_1', "un nombre entre 10 et 20")
                         except:
-                            page_1(f"{self.nombre_mine.text} n'est pas un nombre")
+                            self.next_page = ('page_1', f"{self.nombre_mine.text} n'est pas un nombre")
         def run(self):
                 clock = pygame.time.Clock()
                 while True:
@@ -55,10 +76,17 @@ def page_1(sentence='Entrer le nombre de bombe'):#ajouter d"un argument text afi
                             self.process_events(event)
                     self.manager.update(time_delta/1000)
 
-                    pygame.draw.rect(self.screen, (100, 149, 237), pygame.Rect(0, 0, 1000, 600))
+                    pygame.draw.rect(self.screen, (30, 144, 255), pygame.Rect(0, 0, 1000, 600))
                     self.manager.draw_ui(self.screen)
                     self.screen.blit(self.mon_image, (355, 350))
                     pygame.display.flip()
+                    if self.next_page:
+                        pygame.quit()  # Ferme la fenêtre courante
+                        if self.next_page[0] == 'page_2':
+                            page_2(self.next_page[1])
+                        elif self.next_page[0] == 'page_1':
+                            page_1(self.next_page[1])
+                        return  # Quitte la boucle actuelle
 
     menu().run()
     
@@ -69,7 +97,7 @@ def page_2(number):
             pygame.init()
             self.size = (1000, 600)
             self.screen = pygame.display.set_mode(self.size)
-            self.screen.fill((100, 149, 237))
+            self.screen.fill((30, 144, 255))
             self.manager = pygame_gui.UIManager(self.size,'theme.json')
             self.largeur_case=50
             self.hauteur_case=50
@@ -286,7 +314,7 @@ def page_2(number):
                     self.manager.update(time_delta/1000)
                     self.update_timer()
 
-                    pygame.draw.rect(self.screen, (100, 149, 237), pygame.Rect(0, 0, 1000, 600))
+                    pygame.draw.rect(self.screen, (30, 144, 255), pygame.Rect(0, 0, 1000, 600))
                 
                     self.manager.draw_ui(self.screen)
 
