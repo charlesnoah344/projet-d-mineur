@@ -197,6 +197,9 @@ def page_2(number):
                     for j in range(-1, 2):
                         if 0 <= row + i < self.taille_grille and 0 <= col + j < self.taille_grille:
                             self.reveal_cell(row + i, col + j)
+            elif self.grille[row][col]==-1:
+                self.buttonList[ col * self.taille_grille + row].set_text('MINE')
+                self.buttonList[col * self.taille_grille + row].disable()
             else:
                 # Révéler le nombre de mines voisines
                 self.buttonList[ col * self.taille_grille + row].set_text(f'{int(self.grille[row, col])}')
@@ -265,7 +268,8 @@ def page_2(number):
                     button.disable()#bloquer les boutons et marquer la fin de la partie
                 for i in range(self.taille_grille):
                     for j in range(self.taille_grille):
-                        self.reveal_cell(j, i)
+                        if self.grille[j][i]==-1:
+                            self.reveal_cell(j, i)
 
             elif self.game_over()==True:#si j'ai revelé toutes les cases non minées
                 self.game_over_label=afficher('YOU ARE A GENIOUS!',(550,60),30)
