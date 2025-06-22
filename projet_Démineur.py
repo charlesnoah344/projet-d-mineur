@@ -159,12 +159,7 @@ def page_2(number):
             
             self.game_over_label=afficher(f"MEILLEUR SCORE: \n{best_time['pseudo']} --> {best_time['time']}",(550,60),30)
             self.screen.blit(self.game_over_label[0], self.game_over_label[1])
-        
-            """self.timer_label = UILabel(
-                    relative_rect=pygame.Rect( 150, 150, 150, 100),  # Position et taille
-                    text='00:00',
-                    manager=self.manager
-                )#label qui affiche le temps"""
+
             self.timer_label=afficher('00:00',(150,150),30)
             self.screen.blit(self.timer_label[0], self.timer_label[1])
             
@@ -266,11 +261,14 @@ def page_2(number):
             if self.game_mode==False:
                 self.time_on=False
                 #self.game_over_label.set_text("GAME OVER")
+                self.game_over_label=afficher('GAME OVER',(550,60),30)
+
                 
                 for button in self.buttonList:
                     button.disable()#bloquer les boutons et marquer la fin de la partie
             elif self.game_over()==True:#si j'ai revelé toutes les cases non minées
                 #self.game_over_label.set_text("YOU'RE A GENIOUS!")
+                self.game_over_label=afficher('YOU ARE A GENIOUS!',(550,60),30)
                 self.time_on=False
                 for button in self.buttonList:
                     button.disable()
