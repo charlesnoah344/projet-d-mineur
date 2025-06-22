@@ -6,7 +6,9 @@ from dataclasses import dataclass
 import random
 import numpy as np
 import json
-def page_1():
+def afficher(text):
+    pass
+def page_1(sentence='Entrer le nombre de bombe'):#ajouter d"un argument text afin de pouvoir changer le placeholder 
     """cette fonction définit la page de menu"""
     class menu:
         def __init__(self):
@@ -24,8 +26,8 @@ def page_1():
                     text=f"BIENVENUE DANS LE DEMINEUR DE LESNO",
                     manager=self.manager)
             self.nombre_mine = UITextEntryLine(
-                relative_rect=pygame.Rect(450, 200, 200, 75),placeholder_text='Entrez le nombre de bombe',
-                manager=self.manager)
+                relative_rect=pygame.Rect(450, 200, 200, 75),placeholder_text=sentence,
+                manager=self.manager)#par défaut on demande d'entrer le nombre de bombe
             self.validate_button = UIButton(
                 relative_rect=pygame.Rect(525, 300, 50, 50),
                 text='JOUER',
@@ -36,9 +38,12 @@ def page_1():
                     if event.ui_element is self.validate_button:
                         try:#gestion de l"entrée de l'utilisateur
                             number = int(self.nombre_mine.text)
-                            page_2(number)
+                            if number<20 and number>10:
+                                page_2(number)
+                            else:
+                                page_1("un nombre entre 10 et 20")
                         except:
-                            page_1()
+                            page_1(f"{self.nombre_mine.text} n'est pas un nombre")
         def run(self):
                 clock = pygame.time.Clock()
                 while True:
