@@ -156,20 +156,18 @@ def page_2(number):
                     best_time = min(content, key=lambda x: float(x['time']))#donne le temps minimale(meilleur temps)
                     return best_time
             best_time=best_timer()
-
-            '''self.game_over_label = UILabel(
-                    relative_rect=pygame.Rect( 400, 0, 250, 150),  # Position et taille
-                    text=f"MEILLEUR SCORE: {best_time['pseudo']} --> {best_time['time']}",
-                    manager=self.manager)#label qui affiche le meilleur score et le game over'''
             
             self.game_over_label=afficher(f"MEILLEUR SCORE: \n{best_time['pseudo']} --> {best_time['time']}",(550,60),30)
             self.screen.blit(self.game_over_label[0], self.game_over_label[1])
         
-            self.timer_label = UILabel(
+            """self.timer_label = UILabel(
                     relative_rect=pygame.Rect( 150, 150, 150, 100),  # Position et taille
                     text='00:00',
                     manager=self.manager
-                )#label qui affiche le temps
+                )#label qui affiche le temps"""
+            self.timer_label=afficher('00:00',(150,150),30)
+            self.screen.blit(self.timer_label[0], self.timer_label[1])
+            
             
             # Démarrer le chronomètre
             self.start_time = pygame.time.get_ticks()
@@ -184,7 +182,8 @@ def page_2(number):
                 seconds = (elapsed_time % 60000)//1000 #car le reste de la division eucliedienne obtenue  est lui toujours en ms. 
                     
                     # Mettre à jour le label du chronomètre
-                self.timer_label.set_text(f'{minutes:02}:{seconds:02}')#les variables s'affichent obligatoirement avec 2 chiffres
+                self.timer_label=afficher(f'{minutes:02}:{seconds:02}',(150,150),30)#les variables s'affichent obligatoirement avec 2 chiffres
+                self.screen.blit(self.timer_label[0], self.timer_label[1])
                 self.time=f'{minutes:02}.{seconds:02}'
 
 
@@ -267,6 +266,7 @@ def page_2(number):
             if self.game_mode==False:
                 self.time_on=False
                 #self.game_over_label.set_text("GAME OVER")
+                
                 for button in self.buttonList:
                     button.disable()#bloquer les boutons et marquer la fin de la partie
             elif self.game_over()==True:#si j'ai revelé toutes les cases non minées
@@ -306,6 +306,7 @@ def page_2(number):
                     pygame.draw.rect(self.screen, (30, 144, 255), pygame.Rect(0, 0, 1000, 600))
                     self.manager.draw_ui(self.screen)#dessine le background
                     self.screen.blit(self.game_over_label[0], self.game_over_label[1])
+                    self.screen.blit(self.timer_label[0], self.timer_label[1])
                     pygame.display.flip()
 
     App().run()
