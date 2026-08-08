@@ -72,6 +72,6 @@ Les scores sont enregistrés dans le fichier temps_demineur.json. Le meilleur sc
 
     numpy
 
-## 👨‍💻 Auteur
+##  Auteur
 
 Développé par Lesno (Charles Noah)
