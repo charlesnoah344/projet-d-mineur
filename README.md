@@ -1,7 +1,7 @@
 #  Démineur en Pygame
 
 Bienvenue sur Démineur by Lesno : une version du célèbre jeu du Démineur réalisée en Python avec Pygame et Pygame GUI.
-## 📋 Description
+##  Description
 
 Ce projet est un jeu de Démineur interactif, qui propose :
 
@@ -21,13 +21,13 @@ Ce projet est un jeu de Démineur interactif, qui propose :
 
 ##  Fonctionnalités
 
-✅ Menu d'accueil avec champ de saisie et bouton "JOUER"
-✅ Génération aléatoire du plateau avec placement des mines
-✅ Affichage automatique des zones sans mine (zéro) de manière récursive
-✅ Détection de victoire et de défaite
-✅ Chronomètre en temps réel
-✅ Sauvegarde du meilleur temps et affichage sur l'écran de jeu
-✅ Utilisation intuitive des clics gauche (révéler) et droit (poser/enlever un drapeau)
+ Menu d'accueil avec champ de saisie et bouton "JOUER"
+ Génération aléatoire du plateau avec placement des mines
+ Affichage automatique des zones sans mine (zéro) de manière récursive
+ Détection de victoire et de défaite
+ Chronomètre en temps réel
+ Sauvegarde du meilleur temps et affichage sur l'écran de jeu
+ Utilisation intuitive des clics gauche (révéler) et droit (poser/enlever un drapeau)
 
 
 ##  Instructions
