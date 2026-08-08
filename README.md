@@ -1,4 +1,4 @@
-# 🧨 Démineur en Pygame
+#  Démineur en Pygame
 
 Bienvenue sur Démineur by Lesno : une version du célèbre jeu du Démineur réalisée en Python avec Pygame et Pygame GUI.
 ## 📋 Description
@@ -19,7 +19,7 @@ Ce projet est un jeu de Démineur interactif, qui propose :
 
 [Demo](https://youtu.be/ntOQUUhpPrM)
 
-## 🚀 Fonctionnalités
+##  Fonctionnalités
 
 ✅ Menu d'accueil avec champ de saisie et bouton "JOUER"
 ✅ Génération aléatoire du plateau avec placement des mines
@@ -30,8 +30,8 @@ Ce projet est un jeu de Démineur interactif, qui propose :
 ✅ Utilisation intuitive des clics gauche (révéler) et droit (poser/enlever un drapeau)
 
 
-## 🎮 Instructions
-1️⃣ Lancer le jeu
+##  Instructions
+1️ Lancer le jeu
 
 Assurez-vous d’avoir Python 3 installé, ainsi que les bibliothèques nécessaires :
 
@@ -41,7 +41,7 @@ Puis lancez le script :
 
 python demineur.py
 
-2️⃣ Jouer
+2️ Jouer
 
     Entrez le nombre de bombes (entre 10 et 20) et cliquez sur JOUER.
 
@@ -51,10 +51,10 @@ python demineur.py
 
     Sauvegardez votre score en entrant votre pseudo et en cliquant sur SAVE une fois la partie gagnée.
 
-3️⃣ Sauvegarde
+3️ Sauvegarde
 
 Les scores sont enregistrés dans le fichier temps_demineur.json. Le meilleur score s'affiche en haut de l'écran.
-## 📂 Fichiers importants
+##  Fichiers importants
 
     demineur.py — le script principal du jeu.
 
@@ -64,7 +64,7 @@ Les scores sont enregistrés dans le fichier temps_demineur.json. Le meilleur sc
 
     temps_demineur.json — fichier JSON pour sauvegarder les scores.
 
-## 🛠️ Dépendances
+##  Dépendances
 
     pygame
 
